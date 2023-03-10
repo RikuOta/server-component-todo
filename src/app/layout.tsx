@@ -15,7 +15,7 @@ const RootLayout: FC<Props> = ({
   return (
     <html lang="en">
     <body>
-    <header className="bg-gray-600 text-amber-50 text-4xl">
+    <header className="bg-gray-600 text-amber-50 text-4xl p-6">
       this is header
     </header>
     {children}

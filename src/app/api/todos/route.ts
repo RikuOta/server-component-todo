@@ -1,19 +1,9 @@
+import { PrismaClient } from '@prisma/client';
 
-import { setTimeout } from "timers/promises";
-
-const todos = [{
-  id: 1,
-  name: 'book',
-  status: 'done'
-}, {
-  id: 2,
-  name: 'meat',
-  status: 'done'
-}]
-
+const prismaClient = new PrismaClient();
 export async function GET(request: Request) {
-  await setTimeout(1000)
-  return new Response(JSON.stringify(todos))
+  const data = await prismaClient.todo.findMany({});
+  return new Response(JSON.stringify(data))
 }
 
 export type Todo = {
@@ -23,16 +13,14 @@ export type Todo = {
 }
 
 export async function POST(request: Request) {
-  await setTimeout(1000)
-
   const body = await request.json()
 
-  const maxId = Math.max(...todos.map(todo => todo.id))
-  todos.push({
-    id: maxId + 1,
-    name: body.name,
-    status: "todo"
-  } as Todo) 
+  await prismaClient.todo.create({
+    data: {
+      name: body.name,
+      status: "todo"
+    }
+  });
 
   return new Response('ok')
 }
